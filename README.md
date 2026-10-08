@@ -8,27 +8,91 @@
 
 Python 3.10+；可选 Git。零第三方依赖、不需要 Node、Docker、MySQL 或服务器。macOS/Linux 用 python3，Windows 可把命令中的 python3 换成 py。浏览器建议现代 Chrome/Firefox/Edge。
 
-技术栈调整及 Swagger 说明见 `docs/需求说明.md`。前端为原生 HTML/CSS/JS 空壳，不是 React 项目；这是任务书允许的第一周实现选择。
+技术栈调整及 Swagger 说明见 `docs/需求说明.md`。前端为原生 HTML/CSS/JS 空壳，不是 React 项目；
 
 ## 从干净目录启动
 
-1. 下载解压到不含权限限制的目录，进入 `park-energy-week1`。压缩包同层附有 `park-energy-week1.bundle`，含按模块拆分的 Git 历史。可离线执行 `git clone park-energy-week1.bundle park-energy-clone` 后进入 `park-energy-clone`。交付时未创建外部远程仓库。
-2. 执行：
+### 1. 下载项目
+
+在终端执行：
+
+```bash
+git clone https://github.com/AmberR-pua/IndustrialEnergySystem.git
+cd IndustrialEnergySystem
+```
+
+如果已经把项目下载到电脑，直接进入项目根目录即可，无需重复克隆。后面的命令都在项目根目录执行。
+
+### 2. 生成模拟数据并初始化数据库
+
+首次运行时执行：
 
 ```bash
 python3 db/generate_data.py
 python3 db/init_db.py --import-data
+```
+
+第一条命令生成模拟能耗数据、异常真值文件和生成报告；第二条命令创建数据库、写入基础信息并导入能耗数据。
+
+如果已经初始化过数据库，可以跳过这一步。
+
+### 3. 验证项目
+
+```bash
 python3 scripts/verify.py
+python3 scripts/smoke_test.py
+```
+
+分别检查数据与数据库，以及三个服务的启动和 HTTP 接口。
+
+### 4. 启动系统
+
+```bash
 python3 scripts/run.py
 ```
 
-3. 打开 `http://127.0.0.1:5173`，概览可看到六块器具、全年数据量与注入率；原始数据可按区域/器具/能源/日期预览。API 调试：`http://127.0.0.1:5173/api.html`。
-4. 后端：`http://127.0.0.1:8000/api/health`；算法空壳：`http://127.0.0.1:8001/health`。
-5. Ctrl+C 关闭全部服务。重新启动无需重复造数和建表。明确重建数据库时先停止服务，再运行 `python3 db/init_db.py --reset --import-data`，该操作会清空现有数据库。
+该命令同时启动前端、后端和算法服务。启动后，在浏览器中打开：
 
-交付附带已生成 CSV，可以跳过第一条造数命令直接导入；但验收建议现场重跑。
+- 系统页面：http://127.0.0.1:5173
+- 接口调试页面：http://127.0.0.1:5173/api.html
+- 后端健康检查：http://127.0.0.1:8000/api/health
+- 算法服务健康检查：http://127.0.0.1:8001/health
 
-端口占用：`python3 scripts/run.py --backend-port 8100 --frontend-port 5174 --algo-port 8101`，随后使用打印出的前端地址。单独启动后端：`python3 -m backend.controller`；前端：`python3 frontend/server.py`；算法：`python3 algo-service/server.py`。命令均在项目根目录执行。
+第一周的算法服务提供健康检查接口，模型训练和预测功能将在后续阶段实现。
+
+### 5. 停止与再次启动
+
+在运行服务的终端中按 `Ctrl+C`，即可停止三个服务。
+
+之后再次运行项目，只需执行：
+
+```bash
+python3 scripts/run.py
+```
+
+无需重复生成数据或初始化数据库。
+
+### 6. 重新建立数据库
+
+如果需要清空现有数据库并重新导入数据，先停止服务，再执行：
+
+```bash
+python3 db/init_db.py --reset --import-data
+```
+
+注意：`--reset` 会删除现有数据库并重新创建，请确认现有数据不再需要后使用。
+
+### 7. 端口被占用时
+
+可以指定其他端口启动：
+
+```bash
+python3 scripts/run.py --backend-port 8100 --frontend-port 5174 --algo-port 8101
+```
+
+此时系统页面地址为：http://127.0.0.1:5174。
+
+以上命令适用于 macOS 和 Linux。Windows 可以将命令中的 `python3` 替换为 `py`。
 
 ## 造数参数
 
