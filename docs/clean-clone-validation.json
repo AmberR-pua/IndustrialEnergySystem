@@ -1,0 +1,47 @@
+{
+  "result": "PASS",
+  "cloneMethod": "git clone local bundle into temporary clean directory",
+  "checks": [
+    {
+      "name": "干净Git bundle clone后重跑全年造数",
+      "result": "PASS"
+    },
+    {
+      "name": "克隆重跑CSV与交付哈希一致",
+      "result": "PASS"
+    },
+    {
+      "name": "按README建库与全年数据导入",
+      "result": "PASS"
+    },
+    {
+      "name": "干净clone下26项数据/数据库验证",
+      "result": "PASS"
+    },
+    {
+      "name": "干净clone下三进程启动与11项HTTP联通验证",
+      "result": "PASS"
+    }
+  ],
+  "dataCheckCount": 26,
+  "httpCheckCount": 11,
+  "python": "3.12.14",
+  "commits": [
+    "387496f docs: record validated week-one dataset results and weekly report",
+    "a491106 app: connect local frontend and add startup and verification tools",
+    "b1389f4 backend: add layered read APIs and independent algorithm health skeleton",
+    "ab5af2f data: add schema seeds and reproducible hourly anomaly fixtures",
+    "1aa4cc1 docs: define week-one requirements and API contracts"
+  ],
+  "note": "No remote repository or external deployment was created.",
+  "launcherTest": {
+    "result": "PASS",
+    "command": "python3 scripts/run.py",
+    "urls": [
+      "http://127.0.0.1:5173/",
+      "http://127.0.0.1:8000/api/health",
+      "http://127.0.0.1:8001/health"
+    ],
+    "ctrlCShutdown": "PASS"
+  }
+}

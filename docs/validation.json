@@ -1,0 +1,26 @@
+{
+  "result": "PASS",
+  "scope": "Week 1 data/database/HTTP",
+  "python": "3.12.14",
+  "dataChecks": 26,
+  "httpChecks": 11,
+  "totalChecks": 37,
+  "javascriptSyntax": "node --check app.js and api.js PASS",
+  "browserVisualCheck": "NOT EXECUTED: Chromium binary unavailable. No screenshots or browser interaction results claimed.",
+  "manualCalculation": {
+    "areaId": 2,
+    "date": "2026-01-01",
+    "recordCount": 48,
+    "totalKWh": "3416.58",
+    "standardCoalKgce": "419.90",
+    "carbonEmissionKgCO2": "1948.48"
+  },
+  "evidenceFiles": [
+    "data-validation.json",
+    "http-validation.json"
+  ],
+  "datasetSha256": {
+    "raw_data.csv": "80badac0cad414b20f2146115482c0709920558eac9b38c6278ea60806409e64",
+    "anomaly_truth.csv": "a06b99429c5021cb15765128d8c8c5a796610d42de4b0dc4d1f10abbfc8a93ab"
+  }
+}

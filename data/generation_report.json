@@ -1,0 +1,32 @@
+{
+  "seed": 42,
+  "start": "2026-01-01",
+  "days": 365,
+  "devices": 6,
+  "expected_slots": 52560,
+  "raw_rows": 52034,
+  "truth_rows": 945,
+  "drift_events": 13,
+  "counts": {
+    "MISSING": 526,
+    "SPIKE_HIGH": 127,
+    "SPIKE_LOW": 136,
+    "DRIFT": 156
+  },
+  "requested_ratios": {
+    "missing": 0.01,
+    "outlier": 0.005,
+    "drift": 0.003
+  },
+  "actual_ratios": {
+    "missing": 0.010007610350076104,
+    "outlier": 0.005003805175038052,
+    "drift": 0.0029680365296803654,
+    "all": 0.01797945205479452
+  },
+  "ratio_denominator": "expected hourly slots before deleting missing records",
+  "sha256": {
+    "raw_data.csv": "80badac0cad414b20f2146115482c0709920558eac9b38c6278ea60806409e64",
+    "anomaly_truth.csv": "a06b99429c5021cb15765128d8c8c5a796610d42de4b0dc4d1f10abbfc8a93ab"
+  }
+}
