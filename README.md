@@ -2,13 +2,13 @@
 
 负责人：任若菡。依照学生版任务书第七节第一周交付，源码原创，业务常量按任务书。
 
-交付包含：分层后端、独立前端/算法进程、八张表、完整种子、参数化造数、全年 CSV 与 truth、需求/接口/数据库文档、自动验证、第一周周报。**统计、定时采集、模型训练及预警属于后续周次，第一周不提供虚构模型分数。**
+交付包含：分层后端、独立前端/算法进程、八张表、完整种子、参数化造数、全年 CSV 与 truth、需求/接口/数据库文档、自动验证、第一周周报。**统计、定时采集、模型训练及预警属于后续周次，第一周尚未实现模型训练、预测与预警，因此暂无模型评估结果。**
 
 ## 运行要求
 
 Python 3.10+；可选 Git。零第三方依赖、不需要 Node、Docker、MySQL 或服务器。macOS/Linux 用 python3，Windows 可把命令中的 python3 换成 py。浏览器建议现代 Chrome/Firefox/Edge。
 
-技术栈调整及 Swagger 说明见 `docs/需求说明.md`。前端为原生 HTML/CSS/JS 空壳，不是 React 项目；
+技术栈调整及 Swagger 说明见 `docs/需求说明.md`。前端使用原生 HTML、CSS 和 JavaScript，实现基础页面、原始数据查询和接口调试；后端使用 Python，数据库使用 SQLite。当前版本无需安装第三方 Python 依赖。
 
 ## 从干净目录启动
 
@@ -113,7 +113,11 @@ python3 scripts/verify.py
 python3 scripts/smoke_test.py
 ```
 
-verify 检查全年完整网格、缺行/真值一一对应、互斥异常、漂移窗口/倍率、突变倍率、SHA-256 与重跑一致性、数据库约束和区域下钻过滤、空结果与非法参数。smoke_test 在临时数据库与随机可用端口启动三个服务，测试 HTTP/代理/错误响应，结束后关闭进程。已从干净目录 `git clone` 离线 bundle，按 README 建库、重跑数据、启动三个服务，并验证 Ctrl+C 清理通过；证据在 `docs/clean-clone-validation.json`。其他验证见 `docs/validation.json` 和 `docs/weekly/week1.md`。
+`verify.py` 检查模拟数据的完整性、缺失记录与异常真值的对应关系、异常互斥性、漂移窗口与倍率、文件哈希、数据库约束，以及区域及其下级区域的数据过滤、空结果和非法参数。
+
+`smoke_test.py` 使用临时数据库和可用端口启动前端、后端及算法服务，测试 HTTP 接口、前端代理和错误响应，测试结束后关闭进程。
+
+已有验证记录见 `docs/validation.json`、`docs/data-validation.json` 和 `docs/http-validation.json`。`docs/clean-clone-validation.json` 记录的是原始交付版本通过离线 Git bundle 克隆后的运行验证，不代表当前 GitHub 仓库的克隆验证。第一周完成情况见 `docs/weekly/week1.md`。
 
 ## 目录
 
@@ -133,8 +137,8 @@ verify 检查全年完整网格、缺行/真值一一对应、互斥异常、漂
 ## 常见问题
 
 - 页面提示后端不可用：查看运行终端，先初始化数据库，确认 8000 端口正常。
-- 无原始数据：仅建表不会自动导入；停服务后显式 `--reset --import-data` 重建演示数据。
+- 无原始数据：初始化时需要添加 `--import-data`。如果尚未创建数据库，执行 `python3 db/init_db.py --import-data`；如果数据库已经存在，且确认可以清空现有内容，再停止服务并执行 `python3 db/init_db.py --reset --import-data`。
 - 页面无数据：改变日期/区域；缺失时点本来没有行，不能当成消费量为零。
 - DB already exists：为避免误删，脚本默认拒绝覆盖；只有确定要重建时使用 --reset。
-- Windows：用 `py`，解压后在项目目录打开终端。测试已在当前 Linux 环境执行，macOS/Windows 按标准库兼容设计但未在实体设备验证。
+- Windows：用 `py`，下载或克隆项目后在项目目录打开终端。测试已在当前 Linux 环境执行，macOS/Windows 按标准库兼容设计但未在实体设备验证。
 - 项目无密码配置，无真实业务数据。仅本机开发使用，不向公网发布。
